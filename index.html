@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+
+  <title>DON'T CLICK WARIO!</title>
+
+  <style>
+    body {
+      margin: 0;
+      background: #111;
+      color: white;
+      font-family: monospace;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    h1 {
+      margin: 20px;
+    }
+
+    #message {
+      font-size: 24px;
+      margin: 10px;
+    }
+
+    #bigScore {
+      font-size: 60px;
+      font-weight: bold;
+      height: 80px;
+      line-height: 80px;
+    }
+
+    #timer {
+      width: 300px;
+      height: 15px;
+      background: #333;
+      margin: 10px auto;
+    }
+
+    #bar {
+      width: 100%;
+      height: 100%;
+      background: white;
+    }
+
+    #game {
+      position: relative;
+      width: 90vw;
+      height: 70vh;
+      margin: auto;
+      border: 3px solid white;
+      background: #222;
+    }
+
+    .target {
+      position: absolute;
+      width: 60px;
+      height: 60px;
+      border: none;
+      border-radius: 50%;
+      font-size: 30px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h1>DON'T CLICK WARIO!</h1>
+
+  <div id="message">GET READY!</div>
+
+  <div id="bigScore">0</div>
+
+  <div id="timer">
+    <div id="bar"></div>
+  </div>
+
+  <div id="game"></div>
+
+  <script>
+    const game = document.getElementById("game");
+    const message = document.getElementById("message");
+    const bigScore = document.getElementById("bigScore");
+    const bar = document.getElementById("bar");
+
+    let score = 0;
+    let timer;
+
+    function randomPosition() {
+      return {
+        x: Math.random() * (game.clientWidth - 60),
+        y: Math.random() * (game.clientHeight - 60)
+      };
+    }
+
+    function makeTarget(isWario) {
+      const button = document.createElement("button");
+
+      button.className = "target";
+      button.textContent = isWario ? "W" : "●";
+
+      const position = randomPosition();
+
+      button.style.left = position.x + "px";
+      button.style.top = position.y + "px";
+
+      button.onclick = () => {
+        if (isWario) {
+          message.textContent = "💀 YOU CLICKED WARIO!";
+          clearTimeout(timer);
+          score = 0;
+          bigScore.textContent = score;
+        } else {
+          score++;
+          bigScore.textContent = score;
+          startRound();
+        }
+      };
+
+      game.appendChild(button);
+    }
+
+    function startRound() {
+      clearTimeout(timer);
+
+      game.innerHTML = "";
+      bar.style.width = "100%";
+      message.textContent = "GET READY!";
+
+      setTimeout(() => {
+        message.textContent = "CLICK!";
+
+        for (let i = 0; i < 5; i++) {
+          makeTarget(false);
+        }
+
+        makeTarget(true);
+
+        bar.style.width = "0%";
+
+        timer = setTimeout(() => {
+          message.textContent = "💀 TOO SLOW!";
+          game.innerHTML = "";
+        }, 1000);
+
+      }, 300);
+    }
+
+    startRound();
+  </script>
+
+</body>
+</html>
