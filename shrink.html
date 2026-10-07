@@ -1,0 +1,9 @@
+<!doctype html><meta charset=utf-8><title>WARIO!</title><style>
+body{margin:0;background:#111;color:#fff;font:20px monospace;text-align:center}#g{position:relative;width:90vw;height:70vh;margin:auto;border:3px solid #fff;background:#222}.t{position:absolute;width:60px;height:60px;border:0;border-radius:50%;font-size:30px}
+</style><h1>DON'T CLICK WARIO!</h1><div id=m>GET READY!</div><div id=s>0</div><div id=t><div id=b></div></div><div id=g></div><script>
+g=document.querySelector("#g"),m=document.querySelector("#m"),s=document.querySelector("#s"),b=document.querySelector("#b"),n=0,timer=0
+function r(){return[Math.random()*(g.clientWidth-60),Math.random()*(g.clientHeight-60)]}
+function a(w){x=document.createElement("button");x.className="t";x.textContent=w?"W":"●";p=r();x.style.left=p[0]+"px";x.style.top=p[1]+"px";x.onclick=()=>w?(m.textContent="💀 YOU CLICKED WARIO!",clearTimeout(timer),n=0,s.textContent=0):(n++,s.textContent=n,start());g.append(x)}
+function start(){clearTimeout(timer);g.innerHTML="";m.textContent="GET READY!";setTimeout(()=>{m.textContent="CLICK!";for(i=0;i<5;i++)a(0);a(1);timer=setTimeout(()=>{m.textContent="💀 TOO SLOW!";g.innerHTML=""},1e3)},300)}
+start()
+</script>
